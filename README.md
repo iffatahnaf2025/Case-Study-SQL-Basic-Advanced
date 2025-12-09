@@ -60,19 +60,12 @@ WHERE first_name IN ('Jennifer', 'Nick', 'Ed');
 ```
 
 ### 2.2 Summary Pembayaran Amount >5.99
-- Mengambil record pembayaran dengan amount > 5.99.
-- Menampilkan total amount per payment_id.
-- Dua subquery digunakan untuk menghitung total transaksi dan total nominal secara keseluruhan.
-- Menunjukkan penggunaan kombinasi agregasi & subquery.
+menggunakan fungsi agregat `SUM(amount)` untuk menghitung total pembayaran per payment_id dan memfilter hasil agregasinya agar hanya nilai total di atas 5.99 yang ditampilkan.
 ``` sql
-SELECT
-    p.payment_id,
-    SUM(p.amount) AS "total_amount (>5.99)",
-    (SELECT COUNT(*) FROM payment WHERE amount > 5.99) AS total_transactions,
-    (SELECT SUM(amount) FROM payment WHERE amount > 5.99) AS total_payment
-FROM payment p
-WHERE p.amount > 5.99
-GROUP BY p.payment_id;
+SELECT payment_id, SUM(amount) AS total_amount
+FROM payment
+GROUP BY payment_id
+HAVING SUM(amount) > 5.99;
 ```
 
 ### 2.3 Klasifikasi Film Berdasarkan Durasi
